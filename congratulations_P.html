@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>С Днём Программиста!</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            text-align: center;
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        .binary-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+        
+        .binary-code {
+            position: absolute;
+            color: rgba(0, 255, 255, 0.7);
+            font-size: 24px;
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            text-shadow: 0 0 5px rgba(0, 255, 255, 0.8);
+            animation: fall 15s linear infinite;
+            white-space: nowrap;
+        }
+        
+        @keyframes fall {
+            from {
+                transform: translateY(-100px);
+            }
+            to {
+                transform: translateY(100vh);
+            }
+        }
+        
+        .container {
+            max-width: 800px;
+            background: rgba(0, 0, 0, 0.85);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.5);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+        
+        .container::before {
+            content: "{}";
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            font-size: 24px;
+            opacity: 0.1;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: #4df0f7;
+            text-shadow: 0 0 10px rgba(77, 240, 247, 0.7);
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            color: #fdbb2d;
+        }
+        
+        .image-container {
+            margin: 25px 0;
+            display: none;
+        }
+        
+        .image-container img {
+            max-width: 100%;
+            border-radius: 10px;
+            border: 3px solid #4df0f7;
+            box-shadow: 0 0 15px rgba(77, 240, 247, 0.5);
+        }
+        
+        .btn {
+            background: linear-gradient(to right, #1a2a6c, #b21f1f);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            border-radius: 50px;
+            cursor: pointer;
+            margin: 20px 0;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+            background: linear-gradient(to right, #2a3a7c, #c22f2f);
+        }
+        
+        .btn:active {
+            transform: translateY(1px);
+        }
+        
+        .message {
+            margin: 25px 0;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 5px solid #4df0f7;
+        }
+        
+        .qr-container {
+            margin: 30px 0;
+            padding: 15px;
+            background: white;
+            border-radius: 10px;
+            display: inline-block;
+        }
+        
+        .faculty-info {
+            margin-top: 30px;
+            font-size: 0.9rem;
+            color: #fdbb2d;
+            border-top: 1px dashed #4df0f7;
+            padding-top: 20px;
+        }
+        
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: #fdbb2d;
+            opacity: 0.7;
+            z-index: 2;
+        }
+        
+        @media (max-width: 600px) {
+            h1 { font-size: 2rem; }
+            .btn { padding: 12px 25px; font-size: 1rem; }
+            .binary-code { font-size: 16px; }
+        }
+
+        /* Индикатор загрузки */
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s;
+        }
+        
+        .loader-text {
+            color: #4df0f7;
+            font-size: 1.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="loader" id="loader">
+        <div class="loader-text">Загрузка...</div>
+    </div>
+
+    <div class="binary-bg" id="binaryBackground"></div>
+    
+    <div class="container">
+        <h1>С Днём Программиста!</h1>
+        <p class="subtitle">256-й день года - наш профессиональный праздник!</p>
+        
+<!--        <div class="message">
+            Дорогие одногруппники! Поздравляю с Днём программиста!<br>
+            Желаю, чтобы код всегда компилировался с первого раза,<br>
+            баги обходили стороной, а вдохновение никогда не заканчивалось!
+        </div>
+-->        
+        <button class="btn" onclick="showImage()">Открыть поздравительную картинку</button>
+        
+        <div id="imageContainer" class="image-container">
+            <img src="День программиста.jpg" alt="День Программиста">
+        </div>
+        
+        <div class="qr-container">
+            <h3>QR-код для одногруппников</h3>
+            <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=Привет!+С+Днем+Программиста!" alt="QR код">
+        </div>
+        
+        <div class="faculty-info">Всех благ!</div>
+        
+    </div>
+
+    <script>
+        // Генерация падающего двоичного кода на фоне
+        function createBinaryBackground() {
+            const binaryBg = document.getElementById('binaryBackground');
+            const columns = Math.floor(window.innerWidth / 50); // Кол-во колонок
+            
+            for (let i = 0; i < columns; i++) {
+                const binaryElement = document.createElement('div');
+                binaryElement.classList.add('binary-code');
+                
+                // Случайная последовательность бинарных цифр
+                let binaryText = '';
+                const length = 10 + Math.floor(Math.random() * 10);
+                for (let j = 0; j < length; j++) {
+                    binaryText += Math.random() > 0.5 ? '1' : '0';
+                }
+                
+                binaryElement.textContent = binaryText;
+                binaryElement.style.left = (i * 50) + 'px';
+                binaryElement.style.animationDelay = Math.random() * 10 + 's';
+                binaryElement.style.animationDuration = (10 + Math.random() * 10) + 's';
+                binaryElement.style.opacity = (0.3 + Math.random() * 0.7);
+                
+                binaryBg.appendChild(binaryElement);
+            }
+            
+            // Скрываем индикатор загрузки
+            document.getElementById('loader').style.opacity = '0';
+            setTimeout(() => {
+                document.getElementById('loader').style.display = 'none';
+            }, 500);
+        }
+        
+        // Создаем конфетти
+        function createConfetti() {
+            const container = document.querySelector('.container');
+            
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.classList.add('confetti');
+                confetti.style.left = Math.random() * 100 + '%';
+                confetti.style.top = Math.random() * 100 + '%';
+                confetti.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`;
+                confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
+                container.appendChild(confetti);
+                
+                // Анимация падения конфетти
+                setTimeout(() => {
+                    confetti.style.transition = 'transform 2s ease-out';
+                    confetti.style.transform += ' translateY(100vh)';
+                }, 100);
+            }
+        }
+        
+        // Показать изображение
+        function showImage() {
+            const imageContainer = document.getElementById('imageContainer');
+            imageContainer.style.display = 'block';
+            
+            // Создаем конфетти при открытии изображения
+            createConfetti();
+            
+            // Плавно прокручиваем к изображению
+            imageContainer.scrollIntoView({behavior: 'smooth'});
+        }
+        
+        // Запускаем матрицу сразу, не дожидаясь загрузки изображений
+        document.addEventListener('DOMContentLoaded', function() {
+            createBinaryBackground();
+        });
+        
+        // Предзагрузка изображения для кнопки
+        const preloadImage = new Image();
+        preloadImage.src = "https://cdn.pixabay.com/photo/2016/11/30/20/58/programming-1873854_1280.png";
+    </script>
+</body>
+</html>
